@@ -19,7 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@domains/*": ["./src/domains/*"],
+      "@shared/*": ["src/global/*"]
     }
   },
   "include": [
