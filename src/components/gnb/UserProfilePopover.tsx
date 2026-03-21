@@ -47,7 +47,7 @@ export default function UserProfilePopover({
   return (
     <div
       ref={popoverRef}
-      className="absolute right-0 top-[8px] z-50 mt-2 w-[380px] overflow-hidden rounded-sm border border-gray-300 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.16)]"
+      className="absolute right-0 top-[8px] z-50 mt-2 w-[380px] overflow-visible rounded-sm border border-gray-300 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.16)]"
     >
       {/* 화살표 */}
       <div className="absolute right-[42px] top-[-6px] h-3 w-3 rotate-45 border-l border-t border-gray-300 bg-white" />
@@ -87,9 +87,7 @@ export default function UserProfilePopover({
         <div className="flex flex-1 flex-col justify-center px-5 py-4">
           <div className="mb-1.5 flex items-center gap-2">
             <div className="text-[16px] font-bold text-gray-900 leading-none">
-                <span className="hover:underline">
-              {userName}
-              </span>
+              <span className="hover:underline">{userName}</span>
               <span className="ml-0.5 font-medium text-gray-500">님</span>
             </div>
 
@@ -102,20 +100,27 @@ export default function UserProfilePopover({
             </button>
           </div>
 
-          <div className="mb-2 text-[12px] font-medium text-gray-600">
-            {email}
-          </div>
+          <div className="mb-2 text-[12px] font-medium text-gray-600">{email}</div>
 
           <div className="mb-2.5 flex items-center gap-2 text-[12px] font-medium text-gray-500">
-            <button type="button" className="hover:underline">
+            <button
+              type="button"
+              className="hover:underline"
+            >
               네이버ID
             </button>
             <span>|</span>
-            <button type="button" className="hover:underline">
+            <button
+              type="button"
+              className="hover:underline"
+            >
               보안설정
             </button>
             <span>|</span>
-            <button type="button" className="hover:underline">
+            <button
+              type="button"
+              className="hover:underline"
+            >
               내인증서
             </button>
           </div>
@@ -162,9 +167,7 @@ export default function UserProfilePopover({
 
           <div className="text-left leading-tight">
             <div className="text-[10px] font-semibold text-gray-500">최대</div>
-            <div className="text-[13px] font-extrabold text-gray-900">
-              5% 적립
-            </div>
+            <div className="text-[13px] font-extrabold text-gray-900">5% 적립</div>
           </div>
         </button>
       </div>

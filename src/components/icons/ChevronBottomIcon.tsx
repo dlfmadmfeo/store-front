@@ -1,12 +1,15 @@
 export default function ChevronBottomIcon({
   width = 12,
   height = 12,
+  className = "",
 }: {
   width?: number;
   height?: number;
+  className?: string;
 }) {
   return (
     <svg
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       //   xml:space="preserve"
       width={width}

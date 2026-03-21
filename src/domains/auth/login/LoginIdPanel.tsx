@@ -2,7 +2,7 @@ import CheckCircleIcon from "@/components/icons/CheckCircleIcon";
 import CloseCircleIcon from "@/components/icons/CloseCircleIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
 import Switch from "@/components/Switch";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { mockLoginApi } from "./api/login.mock";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
@@ -17,7 +17,8 @@ export default function LoginIdPanel() {
 
   const router = useRouter();
 
-  const login = async () => {
+  const login = async (e: Event) => {
+    // e.preventDefault();
     if (loading) return;
     if (!userId) return setLoginValidMsg("아이디를 입력하세요.");
     if (!password) return setLoginValidMsg("비밀번호를 입력하세요.");
@@ -29,8 +30,8 @@ export default function LoginIdPanel() {
         useUserStore.getState().login({
           id: "admin",
           name: "조준희",
-          email: "admin@naver.com"
-        })
+          email: "admin@naver.com",
+        });
         alert("로그인 성공");
         router.replace("/");
       } else {
@@ -57,7 +58,7 @@ export default function LoginIdPanel() {
             onChange={(e) => setUserId(e.target.value)}
             onKeyDown={(e) => {
               if (e.code === "Enter") {
-                login();
+                login(e);
               }
             }}
           />

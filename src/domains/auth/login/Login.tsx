@@ -30,7 +30,9 @@ export default function Login() {
         </div>
 
         <div className="w-full h-screen md:w-[420px] md:h-[600px] mx-auto">
+          {/* 로그인 폼 */}
           <LoginForm />
+
           {/* 비밀번호 찾기 / 아이디 찾기 */}
           <div className="mt-2">
             <ul className="flex justify-center gap-10 text-gray-500 font-medium text-sm">
