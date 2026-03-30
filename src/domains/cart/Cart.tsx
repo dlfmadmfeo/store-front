@@ -1,28 +1,39 @@
 "use client";
+
+import { InlineErrorState, SectionSkeleton } from "@/components/common/SectionSkeleton";
 import CartAside from "./CartAside";
-import CartTopBar from "./CartTopBar";
-import CartMain from "./CartMain";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartData } from "./hooks/useCartData";
 import CartEmpty from "./CartEmpty";
+import CartMain from "./CartMain";
+import CartTopBar from "./CartTopBar";
 
 export default function Cart() {
-  const products = useCartStore((s) => s.products);
+  const { products, isLoading, error } = useCartData();
 
   return (
     <>
       <hr className="py-0 text-gray-200" />
-      {/* 탑 */}
       <CartTopBar />
-      {/* 콘텐츠 영역 */}
+
       <div className="content bg-[#f1f4f6]">
-        <div className="max-w-[1280px] mx-auto p-2 md:flex justify-between gap-[20px]">
-          {products.length === 0 ? (
+        <div className="mx-auto max-w-[1280px] gap-[20px] p-2 md:flex md:justify-between">
+          {error ? (
+            <div className="w-full py-4">
+              <InlineErrorState
+                title="장바구니를 불러오지 못했습니다"
+                description={error}
+              />
+            </div>
+          ) : isLoading ? (
+            <div className="w-full space-y-4 py-4">
+              <SectionSkeleton lines={5} />
+              <SectionSkeleton lines={5} />
+            </div>
+          ) : products.length === 0 ? (
             <CartEmpty />
           ) : (
             <>
-              {/* 메인 */}
               <CartMain />
-              {/* 사이드 */}
               <CartAside />
             </>
           )}

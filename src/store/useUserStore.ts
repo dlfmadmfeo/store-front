@@ -1,12 +1,10 @@
 "use client";
 
 import { create } from "zustand";
+import type { LoginPayload } from "@/lib/types/auth";
 import { useAddressStore } from "./useAddressStore";
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
+export type User = Pick<LoginPayload, "id" | "name" | "email"> & {
   profileImageUrl?: string;
 };
 

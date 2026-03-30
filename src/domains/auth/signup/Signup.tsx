@@ -1,144 +1,307 @@
-import UserIcon from "@/components/icons/UserIcon";
-import LockIcon from "@/components/icons/LockIcon";
-import EmailIcon from "@/components/icons/EmailIcon";
-import IdCardIcon from "@/components/icons/IdCardIcon";
-import GlobeIcon from "@/components/icons/GlobeIcon";
-import PhoneIcon from "@/components/icons/PhoneIcon";
-import EyeOffIcon from "@/components/icons/EyeOffIcon";
+"use client";
+
+import { useState } from "react";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
+import EmailIcon from "@/components/icons/EmailIcon";
+import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import GlobeIcon from "@/components/icons/GlobeIcon";
+import IdCardIcon from "@/components/icons/IdCardIcon";
+import LockIcon from "@/components/icons/LockIcon";
+import PhoneIcon from "@/components/icons/PhoneIcon";
+import UserIcon from "@/components/icons/UserIcon";
+import { submitSignup } from "@/lib/api/signup";
+import type { SignupRequest } from "@/lib/types/signup";
+
+const initialForm: SignupRequest = {
+  userId: "",
+  password: "",
+  email: "",
+  name: "",
+  birthDate: "",
+  gender: "none",
+  phone: "",
+  countryCode: "+82",
+};
 
 export default function Signup() {
+  const [form, setForm] = useState<SignupRequest>(initialForm);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: "error" | "success"; message: string } | null>(
+    null,
+  );
+
+  const updateField = <K extends keyof SignupRequest>(key: K, value: SignupRequest[K]) => {
+    setForm((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    if (!form.userId || !form.password || !form.name || !form.birthDate || !form.phone) {
+      setFeedback({
+        type: "error",
+        message: "필수 정보를 모두 입력해 주세요.",
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const response = await submitSignup(form);
+      setFeedback({
+        type: response.success ? "success" : "error",
+        message: response.message,
+      });
+
+      if (response.success) {
+        setForm(initialForm);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen">
-      <div className="mx-auto max-w-[460px] pt-[22px]">
-        <div className="flex justify-between items-end mb-[8px]">
+    <div className="min-h-screen bg-[#f7f9fb] px-4 py-6">
+      <div className="mx-auto max-w-[460px]">
+        <div className="mb-6 flex items-end justify-between">
           <h1 className="text-[28px] font-extrabold leading-none tracking-[-2px] text-[#03c75a]">
             NAVER
           </h1>
 
-          <div className="flex items-center justify-end text-[12px] text-[#8e8e8e]">
-            <span>실명 인증된 아이디로 가입</span>
+          <button
+            type="button"
+            className="flex items-center justify-end text-[12px] text-[#8e8e8e]"
+          >
+            다른 계정으로 가입
             <ChevronDownIcon className="ml-[4px] h-[14px] w-[14px] text-[#b8b8b8]" />
-          </div>
+          </button>
         </div>
 
-        <div className="overflow-hidden rounded-[6px] border border-[#d9dcdf] bg-white">
-          <div className="flex h-[58px] items-center border-b border-[#eceef0] px-[16px]">
-            <UserIcon
-              className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]"
-              size={24}
-            />
-            <input
-              type="text"
-              placeholder="아이디"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
-            <span className="text-[16px] text-[#8e8e8e]">@naver.com</span>
+        <section
+          aria-labelledby="signup-title"
+          className="rounded-[18px] bg-white px-4 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+        >
+          <div className="mb-5">
+            <h2
+              id="signup-title"
+              className="text-[24px] font-bold text-[#111827]"
+            >
+              회원가입
+            </h2>
+            <p className="mt-2 text-[14px] text-[#6b7280]">
+              모바일에서도 입력 흐름이 자연스럽도록 필수 항목과 보조 정보를 분리했습니다.
+            </p>
           </div>
 
-          <div className="flex h-[58px] items-center border-b border-[#eceef0] px-[16px]">
-            <LockIcon className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]" />
-            <input
-              type="password"
-              placeholder="비밀번호"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
+          <div className="space-y-4">
+            <Field label="아이디">
+              <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                <UserIcon
+                  className="h-[20px] w-[20px] text-[#b8b8b8]"
+                  size={24}
+                />
+                <input
+                  type="text"
+                  value={form.userId}
+                  onChange={(event) => updateField("userId", event.target.value)}
+                  placeholder="아이디"
+                  className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                  aria-label="아이디"
+                />
+                <span className="text-[15px] text-[#8e8e8e]">@naver.com</span>
+              </div>
+            </Field>
+
+            <Field label="비밀번호">
+              <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                <LockIcon
+                  className="h-[20px] w-[20px] text-[#b8b8b8]"
+                  size={20}
+                />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={(event) => updateField("password", event.target.value)}
+                  placeholder="비밀번호"
+                  className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                  aria-label="비밀번호"
+                />
+                <button
+                  type="button"
+                  aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+                  onClick={() => setShowPassword((current) => !current)}
+                >
+                  <EyeOffIcon
+                    className="h-[20px] w-[20px] text-[#b8b8b8]"
+                    useSlash={!showPassword}
+                  />
+                </button>
+              </div>
+            </Field>
+
+            <Field label="이메일">
+              <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                <EmailIcon
+                  className="h-[20px] w-[20px] text-[#b8b8b8]"
+                  size={20}
+                />
+                <input
+                  type="email"
+                  value={form.email ?? ""}
+                  onChange={(event) => updateField("email", event.target.value)}
+                  placeholder="[선택] 이메일 주소"
+                  className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                  aria-label="이메일 주소"
+                />
+              </div>
+            </Field>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="이름">
+                <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                  <UserIcon
+                    className="h-[20px] w-[20px] text-[#b8b8b8]"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(event) => updateField("name", event.target.value)}
+                    placeholder="이름"
+                    className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                    aria-label="이름"
+                  />
+                </div>
+              </Field>
+
+              <Field label="생년월일">
+                <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                  <IdCardIcon className="h-[20px] w-[20px] text-[#b8b8b8]" />
+                  <input
+                    type="text"
+                    value={form.birthDate}
+                    onChange={(event) => updateField("birthDate", event.target.value)}
+                    placeholder="생년월일 8자리"
+                    className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                    aria-label="생년월일"
+                  />
+                </div>
+              </Field>
+            </div>
+
+            <Field label="성별">
+              <div className="grid h-[52px] grid-cols-3 overflow-hidden rounded-[12px] border border-[#d9dcdf]">
+                <GenderButton
+                  active={form.gender === "male"}
+                  onClick={() => updateField("gender", "male")}
+                >
+                  남자
+                </GenderButton>
+                <GenderButton
+                  active={form.gender === "female"}
+                  onClick={() => updateField("gender", "female")}
+                >
+                  여자
+                </GenderButton>
+                <GenderButton
+                  active={form.gender === "none"}
+                  onClick={() => updateField("gender", "none")}
+                >
+                  선택안함
+                </GenderButton>
+              </div>
+            </Field>
+
+            <p className="text-[12px] leading-[18px] text-[#03c75a]">
+              입력한 이름, 생년월일, 성별 정보가 실제 정보와 다르면 가입이 제한될 수 있습니다.
+            </p>
+
+            <Field label="휴대전화">
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between rounded-[12px] border border-[#d9dcdf] px-4 py-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <GlobeIcon className="h-[20px] w-[20px] text-[#666]" />
+                    <span className="text-[16px] text-[#222]">대한민국 {form.countryCode}</span>
+                  </div>
+                  <ChevronDownIcon className="h-[18px] w-[18px] text-[#b8b8b8]" />
+                </button>
+
+                <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
+                  <PhoneIcon className="h-[20px] w-[20px] text-[#b8b8b8]" />
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(event) => updateField("phone", event.target.value)}
+                    placeholder="휴대전화번호"
+                    className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
+                    aria-label="휴대전화번호"
+                  />
+                </div>
+              </div>
+            </Field>
+          </div>
+
+          {feedback ? (
+            <p
+              className={`mt-5 text-[14px] font-medium ${feedback.type === "success" ? "text-[#16a34a]" : "text-[#dc2626]"}`}
+              role="status"
+            >
+              {feedback.message}
+            </p>
+          ) : null}
+
+          <div className="pt-6">
             <button
               type="button"
-              aria-label="비밀번호 표시"
+              className="h-[56px] w-full rounded-[12px] bg-[#09b83e] text-[18px] font-bold text-white disabled:bg-[#9fd8b0]"
+              onClick={() => {
+                void handleSubmit();
+              }}
+              disabled={isSubmitting}
             >
-              <EyeOffIcon className="ml-[8px] h-[20px] w-[20px] text-[#b8b8b8]" />
+              {isSubmitting ? "가입 요청 중..." : "가입 요청"}
             </button>
           </div>
-
-          <div className="flex h-[58px] items-center px-[16px]">
-            <EmailIcon className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]" />
-            <input
-              type="text"
-              placeholder="[선택] 이메일주소 (비밀번호 찾기 등 본인 확인용)"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
-          </div>
-        </div>
-
-        <div className="mt-[12px] overflow-hidden rounded-[6px] border border-[#d9dcdf] bg-white">
-          <div className="flex h-[58px] items-center border-b border-[#eceef0] px-[16px]">
-            <UserIcon className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]" />
-            <input
-              type="text"
-              placeholder="이름"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
-          </div>
-
-          <div className="flex h-[58px] items-center border-b border-[#eceef0] px-[16px]">
-            <IdCardIcon className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]" />
-            <input
-              type="text"
-              placeholder="생년월일 8자리"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
-          </div>
-
-          <div className="p-[10px]">
-            <div className="grid h-[48px] grid-cols-3 overflow-hidden rounded-[4px] border border-[#d9dcdf]">
-              <button
-                type="button"
-                className="border-r border-[#d9dcdf] bg-white text-[15px] text-[#666]"
-              >
-                남자
-              </button>
-              <button
-                type="button"
-                className="border-r border-[#d9dcdf] bg-white text-[15px] text-[#666]"
-              >
-                여자
-              </button>
-              <button
-                type="button"
-                className="bg-white text-[15px] text-[#9a9a9a]"
-              >
-                선택안함
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <p className="mt-[10px] text-[12px] leading-[16px] text-[#03c75a]">
-          신분증상의 이름, 생년월일, 성별과 일치하지 않으면 실명인증이 불가합니다.
-        </p>
-
-        <div className="mt-[12px] overflow-hidden rounded-[6px] border border-[#d9dcdf] bg-white">
-          <button
-            type="button"
-            className="flex h-[58px] w-full items-center justify-between border-b border-[#eceef0] px-[16px]"
-          >
-            <div className="flex items-center">
-              <GlobeIcon className="mr-[12px] h-[20px] w-[20px] text-[#666]" />
-              <span className="text-[16px] text-[#222]">대한민국 +82</span>
-            </div>
-            <ChevronDownIcon className="h-[18px] w-[18px] text-[#b8b8b8]" />
-          </button>
-
-          <div className="flex h-[58px] items-center px-[16px]">
-            <PhoneIcon className="mr-[12px] h-[20px] w-[20px] text-[#b8b8b8]" />
-            <input
-              type="text"
-              placeholder="휴대전화번호"
-              className="h-full flex-1 border-0 bg-transparent p-0 text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
-            />
-          </div>
-        </div>
-
-        <div className="pt-[32px] pb-[24px]">
-          <button
-            type="button"
-            className="h-[56px] w-full rounded-[8px] bg-[#09b83e] text-[20px] font-bold text-white"
-          >
-            인증요청
-          </button>
-        </div>
+        </section>
       </div>
     </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="mb-2 text-[14px] font-semibold text-[#111827]">{label}</div>
+      {children}
+    </div>
+  );
+}
+
+function GenderButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={[
+        "border-r border-[#d9dcdf] text-[15px] transition-colors last:border-r-0",
+        active ? "bg-[#effcf4] font-semibold text-[#03c75a]" : "bg-white text-[#666]",
+      ].join(" ")}
+    >
+      {children}
+    </button>
   );
 }

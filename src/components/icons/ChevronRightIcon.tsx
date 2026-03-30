@@ -1,6 +1,11 @@
-export default function ChevronRightIcon() {
+export default function ChevronRightIcon({
+  className = "",
+}: {
+  className?: string;
+}) {
   return (
     <svg
+      className={className}
       width="16"
       height="16"
       viewBox="0 0 16 16"

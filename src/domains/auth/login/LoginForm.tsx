@@ -9,52 +9,43 @@ export default function LoginForm() {
   const [tab, setTab] = useState<TabKey>("id");
 
   return (
-    <>
-      <div>
-        <div>
-          <div className="text-naver font-extrabold text-4xl text-center">NAVER</div>
-          <div className="mt-8">
-            <div className="flex">
-              <TabButton
-                active={tab === "id"}
-                onClick={() => {
-                  setTab("id");
-                }}
-              >
-                ID/전화번호
-              </TabButton>
-              <TabButton
-                active={tab === "otp"}
-                onClick={() => {
-                  setTab("otp");
-                }}
-              >
-                일회용 번호
-              </TabButton>
-              <TabButton
-                active={tab === "qr"}
-                onClick={() => {
-                  setTab("qr");
-                }}
-              >
-                QR 코드
-              </TabButton>
-            </div>
+    <div>
+      <div className="text-center text-4xl font-extrabold text-naver">NAVER</div>
+      <div className="mt-8">
+        <div className="flex">
+          <TabButton
+            active={tab === "id"}
+            onClick={() => {
+              setTab("id");
+            }}
+          >
+            ID/전화번호
+          </TabButton>
+          <TabButton
+            active={tab === "otp"}
+            onClick={() => {
+              setTab("otp");
+            }}
+          >
+            일회용 번호
+          </TabButton>
+          <TabButton
+            active={tab === "qr"}
+            onClick={() => {
+              setTab("qr");
+            }}
+          >
+            QR 코드
+          </TabButton>
+        </div>
 
-            {/* 탭 컨텐츠 카드 (스샷의 박스) */}
-            <div className="rounded-b-2xl border border-gray-200 bg-white p-6">
-              {tab === "id" && (
-                <div>
-                  <LoginIdPanel />
-                </div>
-              )}
-              {tab === "otp" && <div>여기에 일회용번호 폼</div>}
-              {tab === "qr" && <div>여기에 QR 안내</div>}
-            </div>
-          </div>
+        <div className="rounded-b-2xl border border-gray-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+          {tab === "id" ? <LoginIdPanel /> : null}
+          {tab === "otp" ? <PlaceholderPanel title="일회용 번호 로그인 준비 중" /> : null}
+          {tab === "qr" ? <PlaceholderPanel title="QR 코드 로그인 안내 준비 중" /> : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -72,21 +63,20 @@ function TabButton({
       type="button"
       onClick={onClick}
       className={[
-        "cursor-pointer",
-        "flex-1 px-4 py-3 text-sm font-semibold",
-        "border border-gray-200",
+        "flex-1 cursor-pointer border border-gray-200 px-4 py-3 text-sm font-semibold transition",
         "first:rounded-tl-2xl last:rounded-tr-2xl",
-        "transition",
-        active
-          ? [
-              "bg-white text-gray-900",
-              "border-b-white", // 아래 카드와 연결되게
-              "-mb-px", // border 겹침 1px 제거 (핵심)
-            ].join(" ")
-          : "bg-gray-50 text-gray-500 hover:text-gray-700",
+        active ? "border-b-white bg-white -mb-px text-gray-900" : "bg-gray-50 text-gray-500 hover:text-gray-700",
       ].join(" ")}
     >
       {children}
     </button>
+  );
+}
+
+function PlaceholderPanel({ title }: { title: string }) {
+  return (
+    <div className="rounded-[16px] border border-dashed border-gray-200 bg-gray-50 px-4 py-8 text-center text-[14px] text-gray-500">
+      {title}
+    </div>
   );
 }

@@ -1,19 +1,15 @@
+import Link from "next/link";
 import ChevronBottomIcon from "@/components/icons/ChevronBottomIcon";
 import LoginForm from "./LoginForm";
-import Link from "next/link";
 
 export default function Login() {
   return (
-    <>
-      <div className="min-h-screen p-2">
+    <div className="min-h-screen bg-[#f7f9fb] p-4">
+      <div className="mx-auto max-w-[420px]">
         <div className="flex justify-end">
-          {/* 언어 선택 (우상단) */}
           <div className="relative w-fit">
             <select
-              className="rounded-md border border-gray-200
-            pl-3 pr-8 py-1 text-sm text-gray-700 focus:outline-none
-            focus:ring-1 focus:ring-gray-400
-            bg-white cursor-pointer appearance-none"
+              className="cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-1 pl-3 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400"
               defaultValue="ko"
               aria-label="언어 선택"
             >
@@ -29,13 +25,11 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="w-full h-screen md:w-[420px] md:h-[600px] mx-auto">
-          {/* 로그인 폼 */}
+        <div className="mt-10">
           <LoginForm />
 
-          {/* 비밀번호 찾기 / 아이디 찾기 */}
-          <div className="mt-2">
-            <ul className="flex justify-center gap-10 text-gray-500 font-medium text-sm">
+          <div className="mt-4">
+            <ul className="flex justify-center gap-6 text-sm font-medium text-gray-500 sm:gap-10">
               <li>
                 <Link href="/find-pwd">비밀번호 찾기</Link>
               </li>
@@ -49,6 +43,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
