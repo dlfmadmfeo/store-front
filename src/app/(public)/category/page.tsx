@@ -1,5 +1,8 @@
 import CategoryLanding from "@/domains/category/CategoryLanding";
+import { getCategoryMenuData } from "@/lib/api/navigation";
 
-export default function CategoryPage() {
-  return <CategoryLanding />;
+export default async function CategoryPage() {
+  const data = await getCategoryMenuData();
+
+  return <CategoryLanding data={data} />;
 }

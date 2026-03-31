@@ -1,5 +1,3 @@
-"use client";
-
 import GnbNav from "@/components/gnb/GnbNav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

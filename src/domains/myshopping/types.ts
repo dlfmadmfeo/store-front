@@ -17,6 +17,7 @@ export type MyShoppingLikedProduct = {
   priceLabel: string;
   accent: string;
   badge: string;
+  imageUrl: string;
 };
 
 export type MyShoppingProfileSummary = {

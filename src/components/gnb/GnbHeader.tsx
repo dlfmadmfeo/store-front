@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchPanelData } from "@/domains/navigation/hooks/useSearchPanelData";
@@ -16,10 +17,11 @@ import CategoryRectIcon from "@/components/icons/CategoryRectIcon";
 import MyShoppingIcon from "@/components/icons/MyShoppingIcon";
 import NaverPayIcon from "@/components/icons/NaverPayIcon";
 import NaverPlusIcon from "@/components/icons/NaverPlusIcon";
-import CategoryHoverMenu from "./CategoryHoverMenu";
-import MyShoppingPopover from "./MyShoppingPopover";
 import SearchBoxWithDropdown from "./SearchBoxWithDropdown";
-import UserProfilePopover from "./UserProfilePopover";
+
+const CategoryHoverMenu = dynamic(() => import("./CategoryHoverMenu"));
+const MyShoppingPopover = dynamic(() => import("./MyShoppingPopover"));
+const UserProfilePopover = dynamic(() => import("./UserProfilePopover"));
 
 const menus = [
   { key: "CATEGORY", label: "카테고리", path: "/category", Icon: CategoryIcon },

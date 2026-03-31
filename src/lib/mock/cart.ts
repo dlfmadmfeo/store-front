@@ -1,4 +1,5 @@
 import type { CartProduct } from "@/lib/types/cart";
+import { createMockImageDataUrl } from "@/lib/utils/mockImage";
 
 export const mockCartProducts: CartProduct[] = [
   {
@@ -9,6 +10,11 @@ export const mockCartProducts: CartProduct[] = [
     originalPrice: 14900,
     salePrice: 10900,
     checked: true,
+    imageUrl: createMockImageDataUrl({
+      label: "BEEF SET",
+      startColor: "#6d2f25",
+      endColor: "#d3a07a",
+    }),
     shippingText: "\uB0B4\uC77C\uCD9C\uBC1C \uC608\uC815",
     options: [
       {
@@ -34,6 +40,11 @@ export const mockCartProducts: CartProduct[] = [
     originalPrice: 17900,
     salePrice: 13900,
     checked: true,
+    imageUrl: createMockImageDataUrl({
+      label: "PREMIUM",
+      startColor: "#8d4334",
+      endColor: "#e2bea2",
+    }),
     shippingText: "\uC624\uB298 15:00 \uC774\uC804 \uACB0\uC81C \uC2DC \uB2F9\uC77C \uBC1C\uC1A1",
     options: [
       {

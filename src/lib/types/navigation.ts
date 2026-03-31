@@ -26,6 +26,7 @@ export type SearchResultItem = {
   badge?: string;
   deliveryLabel: string;
   imageAccent: string;
+  imageUrl: string;
 };
 
 export type SearchResultsResponse = {
@@ -38,6 +39,7 @@ export type SearchResultsResponse = {
 export type CategoryMenuSection = {
   title: string;
   tone?: "green" | "mint" | "purple" | "default";
+  imageUrl?: string;
 };
 
 export type CategoryMenuData = {

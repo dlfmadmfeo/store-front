@@ -1,11 +1,18 @@
-"use client";
-
 import Link from "next/link";
 import { InlineEmptyState, InlineErrorState, SectionSkeleton } from "@/components/common/SectionSkeleton";
-import { useSearchResults } from "@/domains/search/hooks/useSearchResults";
+import Image from "next/image";
+import type { SearchResultsResponse } from "@/lib/types/navigation";
 
-export default function SearchResultsPage({ query }: { query: string }) {
-  const { data, isLoading, error } = useSearchResults(query);
+export default function SearchResultsPage({
+  query,
+  data,
+  error,
+}: {
+  query: string;
+  data: SearchResultsResponse | null;
+  error?: string | null;
+}) {
+  const isLoading = false;
 
   return (
     <div className="bg-[#f4f7fb] px-3 py-5 sm:px-4 md:px-6 md:py-6">
@@ -52,10 +59,15 @@ export default function SearchResultsPage({ query }: { query: string }) {
                     className="rounded-[18px] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6 sm:py-5"
                   >
                     <div className="flex flex-col gap-4 sm:flex-row">
-                      <div
-                        className={`h-[160px] rounded-[16px] bg-gradient-to-br ${item.imageAccent} sm:h-[140px] sm:w-[160px]`}
-                        aria-hidden="true"
-                      />
+                      <div className="relative h-[160px] overflow-hidden rounded-[16px] bg-gradient-to-br sm:h-[140px] sm:w-[160px]">
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 160px"
+                          className="object-cover"
+                        />
+                      </div>
 
                       <div className="flex flex-1 flex-col justify-between">
                         <div>

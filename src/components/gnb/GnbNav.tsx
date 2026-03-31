@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { navConentItems } from "./GnbNavItems";
 import { useRouter } from "next/navigation";

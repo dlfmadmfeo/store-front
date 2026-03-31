@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+import { createMockSearchResults, mockCategoryMenuData, mockSearchPanelData } from "@/lib/mock/navigation";
 import type { CategoryMenuData, SearchPanelData, SearchResultsResponse } from "@/lib/types/navigation";
 
 async function parseJson<T>(response: Response): Promise<T> {
@@ -11,7 +13,7 @@ async function parseJson<T>(response: Response): Promise<T> {
 export async function fetchSearchPanelData(): Promise<SearchPanelData> {
   const response = await fetch("/api/navigation/search-panel", {
     method: "GET",
-    cache: "no-store",
+    cache: "force-cache",
   });
 
   return parseJson<SearchPanelData>(response);
@@ -20,7 +22,7 @@ export async function fetchSearchPanelData(): Promise<SearchPanelData> {
 export async function fetchCategoryMenuData(): Promise<CategoryMenuData> {
   const response = await fetch("/api/navigation/categories", {
     method: "GET",
-    cache: "no-store",
+    cache: "force-cache",
   });
 
   return parseJson<CategoryMenuData>(response);
@@ -30,8 +32,24 @@ export async function fetchSearchResults(query: string): Promise<SearchResultsRe
   const params = new URLSearchParams({ query });
   const response = await fetch(`/api/search?${params.toString()}`, {
     method: "GET",
-    cache: "no-store",
+    next: { revalidate: 300 },
   });
 
   return parseJson<SearchResultsResponse>(response);
+}
+
+export const getSearchPanelData = unstable_cache(
+  async () => mockSearchPanelData,
+  ["search-panel-data"],
+  { revalidate: 3600 },
+);
+
+export const getCategoryMenuData = unstable_cache(
+  async () => mockCategoryMenuData,
+  ["category-menu-data"],
+  { revalidate: 3600 },
+);
+
+export async function getSearchResultsData(query: string) {
+  return createMockSearchResults(query);
 }

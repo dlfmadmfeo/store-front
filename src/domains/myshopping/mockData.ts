@@ -3,6 +3,7 @@ import type {
   MyShoppingMenuSection,
   MyShoppingOrder,
 } from "./types";
+import { createMockImageDataUrl } from "@/lib/utils/mockImage";
 
 export const myShoppingMenuSections: MyShoppingMenuSection[] = [
   { title: "마이쇼핑 홈", path: "/myshop", items: [] },
@@ -46,6 +47,12 @@ export const myShoppingHomeData: MyShoppingHomeData = {
       priceLabel: "89,000원",
       accent: "from-[#f7e7d5] to-[#f0c59f]",
       badge: "무료배송",
+      imageUrl: createMockImageDataUrl({
+        label: "ATELIER",
+        startColor: "#f7e7d5",
+        endColor: "#f0c59f",
+        textColor: "#5a3925",
+      }),
     },
     {
       id: "liked-2",
@@ -54,6 +61,12 @@ export const myShoppingHomeData: MyShoppingHomeData = {
       priceLabel: "243,500원",
       accent: "from-[#eadfce] to-[#c6a78a]",
       badge: "베스트",
+      imageUrl: createMockImageDataUrl({
+        label: "WOOD",
+        startColor: "#eadfce",
+        endColor: "#c6a78a",
+        textColor: "#4f3826",
+      }),
     },
     {
       id: "liked-3",
@@ -62,6 +75,12 @@ export const myShoppingHomeData: MyShoppingHomeData = {
       priceLabel: "140,300원",
       accent: "from-[#f6edd8] to-[#d8b36c]",
       badge: "추천",
+      imageUrl: createMockImageDataUrl({
+        label: "WEDDING",
+        startColor: "#f6edd8",
+        endColor: "#d8b36c",
+        textColor: "#5f4614",
+      }),
     },
     {
       id: "liked-4",
@@ -70,6 +89,12 @@ export const myShoppingHomeData: MyShoppingHomeData = {
       priceLabel: "240,500원",
       accent: "from-[#d8d2ca] to-[#82756d]",
       badge: "인기",
+      imageUrl: createMockImageDataUrl({
+        label: "LIVE",
+        startColor: "#d8d2ca",
+        endColor: "#82756d",
+        textColor: "#ffffff",
+      }),
     },
   ],
 };

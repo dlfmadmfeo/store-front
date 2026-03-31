@@ -9,5 +9,9 @@ export async function GET(request: Request) {
 
   await delay(180);
 
-  return NextResponse.json(createMockSearchResults(query));
+  return NextResponse.json(createMockSearchResults(query), {
+    headers: {
+      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=1800",
+    },
+  });
 }

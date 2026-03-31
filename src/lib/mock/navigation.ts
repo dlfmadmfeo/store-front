@@ -1,4 +1,5 @@
 import type { CategoryMenuData, SearchPanelData, SearchResultsResponse } from "@/lib/types/navigation";
+import { createMockImageDataUrl } from "@/lib/utils/mockImage";
 
 export const mockSearchPanelData: SearchPanelData = {
   recentKeywords: ["말차", "웨딩 사회자", "LED 침대 프레임"],
@@ -56,9 +57,33 @@ export const mockCategoryMenuData: CategoryMenuData = {
     "전체보기",
   ],
   featuredSections: [
-    { title: "지금 많이 찾는 상품", tone: "green" },
-    { title: "지금 가장 핫한 특가", tone: "mint" },
-    { title: "큐레이션 추천", tone: "purple" },
+    {
+      title: "지금 많이 찾는 상품",
+      tone: "green",
+      imageUrl: createMockImageDataUrl({
+        label: "BEST NOW",
+        startColor: "#0f9f6e",
+        endColor: "#8ae6c1",
+      }),
+    },
+    {
+      title: "지금 가장 핫한 특가",
+      tone: "mint",
+      imageUrl: createMockImageDataUrl({
+        label: "HOT DEAL",
+        startColor: "#24c4a5",
+        endColor: "#b3f1dd",
+      }),
+    },
+    {
+      title: "큐레이션 추천",
+      tone: "purple",
+      imageUrl: createMockImageDataUrl({
+        label: "CURATION",
+        startColor: "#6e54d9",
+        endColor: "#c1b8ff",
+      }),
+    },
   ],
   secondaryCategories: [
     "생수/탄산수",
@@ -93,6 +118,12 @@ const mockSearchItems = [
     badge: "무료배송",
     deliveryLabel: "오늘 출발",
     imageAccent: "from-[#dce9cd] to-[#8cbf63]",
+    imageUrl: createMockImageDataUrl({
+      label: "MATCHA",
+      startColor: "#dce9cd",
+      endColor: "#8cbf63",
+      textColor: "#18361d",
+    }),
   },
   {
     id: "search-2",
@@ -103,6 +134,12 @@ const mockSearchItems = [
     badge: "베스트",
     deliveryLabel: "내일 도착 예정",
     imageAccent: "from-[#e9dccd] to-[#be9464]",
+    imageUrl: createMockImageDataUrl({
+      label: "BED FRAME",
+      startColor: "#e9dccd",
+      endColor: "#be9464",
+      textColor: "#3b2a19",
+    }),
   },
   {
     id: "search-3",
@@ -113,6 +150,12 @@ const mockSearchItems = [
     badge: "추천",
     deliveryLabel: "상담 후 확정",
     imageAccent: "from-[#f4ecd9] to-[#d8b16a]",
+    imageUrl: createMockImageDataUrl({
+      label: "WEDDING",
+      startColor: "#f4ecd9",
+      endColor: "#d8b16a",
+      textColor: "#4c3410",
+    }),
   },
   {
     id: "search-4",
@@ -122,6 +165,12 @@ const mockSearchItems = [
     seller: "케이스티파이",
     deliveryLabel: "오늘 출발",
     imageAccent: "from-[#dfe5ef] to-[#7ea0d7]",
+    imageUrl: createMockImageDataUrl({
+      label: "CASE",
+      startColor: "#dfe5ef",
+      endColor: "#7ea0d7",
+      textColor: "#1b3150",
+    }),
   },
 ];
 

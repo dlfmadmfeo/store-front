@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import MyShoppingMobileNav from "./MyShoppingMobileNav";
@@ -11,8 +11,9 @@ import {
   MyShoppingErrorState,
 } from "./MyShoppingStates";
 import { useMyShoppingOrdersData } from "./useMyShoppingData";
-import type { OrderFilter } from "./types";
+import type { MyShoppingOrder, OrderFilter } from "./types";
 import { buildMyShoppingOrderLink } from "@/lib/utils/myShoppingDeepLink";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 
 const filterOptions: Array<{ label: string; value: OrderFilter }> = [
   { label: "전체", value: "all" },
@@ -32,19 +33,18 @@ export default function MyShoppingOrders() {
   const isWebview = entry === "app";
 
   const [queryInput, setQueryInput] = useState(initialQuery);
-  const [query, setQuery] = useState(initialQuery);
   const [filter, setFilter] = useState<OrderFilter>(initialFilter);
-  const { data, isLoading, error } = useMyShoppingOrdersData(query, filter);
+  const debouncedQuery = useDebouncedValue(queryInput.trim(), 300);
+  const { data, isLoading, error } = useMyShoppingOrdersData(debouncedQuery, filter);
 
   useEffect(() => {
     setQueryInput(initialQuery);
-    setQuery(initialQuery);
     setFilter(initialFilter);
   }, [initialFilter, initialQuery]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setQuery(queryInput);
+    setQueryInput((current) => current.trim());
   }
 
   const orders = data?.orders ?? [];
@@ -95,7 +95,7 @@ export default function MyShoppingOrders() {
       <div className="space-y-4">
         {isWebview ? (
           <section className="rounded-[16px] border border-[#d8f5e3] bg-[#f5fdf8] px-5 py-4 text-[14px] text-[#0f7a43] shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-            앱 웹뷰로 진입함. 딥링크 파라미터 기준으로 주문 화면을 맞춤 표시 중.
+            앱 웹뷰로 진입했습니다. 딥링크 파라미터에 맞춰 주문 화면을 표시하고 있습니다.
           </section>
         ) : null}
 
@@ -179,94 +179,13 @@ export default function MyShoppingOrders() {
               const isFocused = focusOrderId === order.id;
 
               return (
-                <section
+                <OrderCard
                   key={order.id}
-                  aria-label={`${order.status} 주문 카드`}
-                  className={[
-                    "rounded-[16px] bg-white px-5 py-5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] sm:px-7 sm:py-6",
-                    isFocused ? "ring-2 ring-[#09aa5c]" : "",
-                  ].join(" ")}
-                >
-                  <div className="mb-4 flex items-center justify-between">
-                    <div>
-                      <div className="text-[16px] font-bold text-gray-900">{order.status}</div>
-                      <div className="mt-1 text-[13px] text-gray-500">{order.orderNumber}</div>
-                    </div>
-                    <button
-                      type="button"
-                      className="text-[22px] font-light text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2"
-                      aria-label="주문 카드 닫기"
-                    >
-                      &times;
-                    </button>
-                  </div>
-
-                  <div className="mb-4 flex flex-wrap gap-2 text-[12px] text-gray-500">
-                    <span className="rounded-full bg-gray-100 px-2.5 py-1">
-                      {order.channel === "app" ? "앱 웹뷰 주문" : "웹 주문"}
-                    </span>
-                    <span className="rounded-full bg-gray-100 px-2.5 py-1">{order.paymentMethod}</span>
-                  </div>
-
-                  <div className="flex flex-col gap-4 lg:flex-row">
-                    <div
-                      aria-hidden="true"
-                      className={`h-[98px] w-full rounded-[10px] bg-gradient-to-br sm:w-[102px] lg:shrink-0 ${order.imageClass}`}
-                    />
-
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[14px] text-gray-400">{order.orderedAt}</div>
-                      <div className="mt-1 line-clamp-2 text-[15px] leading-6 text-gray-800">
-                        {order.title}
-                      </div>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span className="text-[18px] font-bold text-gray-950">{order.priceLabel}</span>
-                        <span className="rounded-[999px] bg-[#00c73c] px-2 py-0.5 text-[12px] font-semibold text-white">
-                          N pay
-                        </span>
-                      </div>
-                      <button className="mt-1 text-[14px] font-medium text-[#09a561] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2">
-                        상세보기 &gt;
-                      </button>
-                    </div>
-
-                    <button className="text-left text-[15px] font-medium text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 lg:self-center">
-                      {order.sellerActionLabel}
-                    </button>
-                  </div>
-
-                  <div className="mt-5 flex flex-col gap-1.5 sm:flex-row">
-                    <button className="rounded-[6px] border border-gray-300 px-4 py-3 text-[15px] font-medium text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 sm:flex-1">
-                      장바구니 담기
-                    </button>
-                    <button className="rounded-[6px] border border-gray-300 px-4 py-3 text-[15px] font-medium text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 sm:flex-1">
-                      바로 구매하기
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded-[6px] border border-gray-300 px-4 py-3 text-[18px] text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2"
-                      aria-label="주문 추가 메뉴"
-                    >
-                      ...
-                    </button>
-                  </div>
-
-                  {!isWebview ? (
-                    <div className="mt-4 border-t border-dashed border-gray-200 pt-4">
-                      <Link
-                        href={buildMyShoppingOrderLink({
-                          entry: "app",
-                          filter,
-                          orderId: order.id,
-                          source: "myshopping",
-                        })}
-                        className="inline-flex rounded-[10px] border border-[#bfdbfe] bg-[#f7faff] px-4 py-2 text-[13px] font-medium text-[#1d4ed8]"
-                      >
-                        앱 웹뷰 진입 링크로 보기
-                      </Link>
-                    </div>
-                  ) : null}
-                </section>
+                  order={order}
+                  isFocused={isFocused}
+                  isWebview={isWebview}
+                  currentFilter={filter}
+                />
               );
             })
           : null}
@@ -294,3 +213,105 @@ export default function MyShoppingOrders() {
     </MyShoppingShell>
   );
 }
+
+const OrderCard = memo(function OrderCard({
+  order,
+  isFocused,
+  isWebview,
+  currentFilter,
+}: {
+  order: MyShoppingOrder;
+  isFocused: boolean;
+  isWebview: boolean;
+  currentFilter: OrderFilter;
+}) {
+  return (
+    <section
+      aria-label={`${order.status} 주문 카드`}
+      className={[
+        "rounded-[16px] bg-white px-5 py-5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] sm:px-7 sm:py-6",
+        isFocused ? "ring-2 ring-[#09aa5c]" : "",
+      ].join(" ")}
+    >
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="text-[16px] font-bold text-gray-900">{order.status}</div>
+          <div className="mt-1 text-[13px] text-gray-500">{order.orderNumber}</div>
+        </div>
+        <button
+          type="button"
+          className="text-[22px] font-light text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2"
+          aria-label="주문 카드 닫기"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div className="mb-4 flex flex-wrap gap-2 text-[12px] text-gray-500">
+        <span className="rounded-full bg-gray-100 px-2.5 py-1">
+          {order.channel === "app" ? "앱 웹뷰 주문" : "웹 주문"}
+        </span>
+        <span className="rounded-full bg-gray-100 px-2.5 py-1">{order.paymentMethod}</span>
+      </div>
+
+      <div className="flex flex-col gap-4 lg:flex-row">
+        <div
+          aria-hidden="true"
+          className={`h-[98px] w-full rounded-[10px] bg-gradient-to-br sm:w-[102px] lg:shrink-0 ${order.imageClass}`}
+        />
+
+        <div className="min-w-0 flex-1">
+          <div className="text-[14px] text-gray-400">{order.orderedAt}</div>
+          <div className="mt-1 line-clamp-2 text-[15px] leading-6 text-gray-800">
+            {order.title}
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="text-[18px] font-bold text-gray-950">{order.priceLabel}</span>
+            <span className="rounded-[999px] bg-[#00c73c] px-2 py-0.5 text-[12px] font-semibold text-white">
+              N pay
+            </span>
+          </div>
+          <button className="mt-1 text-[14px] font-medium text-[#09a561] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2">
+            상세보기 &gt;
+          </button>
+        </div>
+
+        <button className="text-left text-[15px] font-medium text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 lg:self-center">
+          {order.sellerActionLabel}
+        </button>
+      </div>
+
+      <div className="mt-5 flex flex-col gap-1.5 sm:flex-row">
+        <button className="rounded-[6px] border border-gray-300 px-4 py-3 text-[15px] font-medium text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 sm:flex-1">
+          장바구니 담기
+        </button>
+        <button className="rounded-[6px] border border-gray-300 px-4 py-3 text-[15px] font-medium text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2 sm:flex-1">
+          바로 구매하기
+        </button>
+        <button
+          type="button"
+          className="rounded-[6px] border border-gray-300 px-4 py-3 text-[18px] text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#09aa5c] focus-visible:ring-offset-2"
+          aria-label="주문 추가 메뉴"
+        >
+          ...
+        </button>
+      </div>
+
+      {!isWebview ? (
+        <div className="mt-4 border-t border-dashed border-gray-200 pt-4">
+          <Link
+            href={buildMyShoppingOrderLink({
+              entry: "app",
+              filter: currentFilter,
+              orderId: order.id,
+              source: "myshopping",
+            })}
+            className="inline-flex rounded-[10px] border border-[#bfdbfe] bg-[#f7faff] px-4 py-2 text-[13px] font-medium text-[#1d4ed8]"
+          >
+            앱 웹뷰 진입 링크로 보기
+          </Link>
+        </div>
+      ) : null}
+    </section>
+  );
+});

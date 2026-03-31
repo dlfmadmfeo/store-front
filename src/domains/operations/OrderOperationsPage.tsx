@@ -6,6 +6,7 @@ import { fetchOperationOrders, updateOperationOrder } from "@/lib/api/operations
 import type { MyShoppingOrder, OrderStatus } from "@/domains/myshopping/types";
 import { InlineErrorState, InlineEmptyState, SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { buildMyShoppingOrderLink, getOrderFilterFromStatus } from "@/lib/utils/myShoppingDeepLink";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 
 const statusOptions: Array<{ label: string; value: string }> = [
   { label: "전체", value: "all" },
@@ -25,7 +26,6 @@ const channelOptions = [
 export default function OrderOperationsPage() {
   const router = useRouter();
   const [queryInput, setQueryInput] = useState("");
-  const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
   const [channel, setChannel] = useState("all");
   const [orders, setOrders] = useState<MyShoppingOrder[]>([]);
@@ -36,6 +36,7 @@ export default function OrderOperationsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState("");
+  const debouncedQuery = useDebouncedValue(queryInput.trim(), 300);
 
   useEffect(() => {
     let mounted = true;
@@ -45,7 +46,7 @@ export default function OrderOperationsPage() {
       setError(null);
 
       try {
-        const items = await fetchOperationOrders({ query, status, channel });
+        const items = await fetchOperationOrders({ query: debouncedQuery, status, channel });
         if (!mounted) return;
 
         setOrders(items);
@@ -71,7 +72,7 @@ export default function OrderOperationsPage() {
     return () => {
       mounted = false;
     };
-  }, [query, status, channel]);
+  }, [debouncedQuery, status, channel]);
 
   const selectedOrder = orders.find((item) => item.id === selectedOrderId) ?? null;
 
@@ -112,7 +113,7 @@ export default function OrderOperationsPage() {
             주문 운영 관리
           </h1>
           <p className="mt-3 text-[15px] text-[#6b7280]">
-            주문 검색, 상태 필터링, 운영 메모 업데이트를 한 화면에서 처리하는 내부 관리 화면 시안입니다.
+            주문 검색, 상태 필터링, 운영 메모 업데이트를 한 화면에서 처리할 수 있도록 구성한 내부 관리 화면입니다.
           </p>
         </section>
 
@@ -124,7 +125,7 @@ export default function OrderOperationsPage() {
             className="grid gap-3 md:grid-cols-[minmax(0,1fr)_160px_160px_100px]"
             onSubmit={(event) => {
               event.preventDefault();
-              setQuery(queryInput);
+              setQueryInput((current) => current.trim());
             }}
           >
             <label className="sr-only" htmlFor="operations-order-query">
@@ -311,7 +312,7 @@ export default function OrderOperationsPage() {
                   <div className="mt-4 rounded-[12px] border border-[#d8e5ff] bg-[#f7faff] px-4 py-4">
                     <div className="text-[13px] font-semibold text-[#1d4ed8]">앱 웹뷰 진입 테스트</div>
                     <p className="mt-2 text-[13px] leading-5 text-[#4b5563]">
-                      운영 화면에서 선택한 주문을 앱 웹뷰로 열 때 쓰는 딥링크를 여기서 바로 재현할 수 있습니다.
+                      운영 화면에서 선택한 주문을 앱 웹뷰로 열 때 사용하는 딥링크를 여기서 바로 확인할 수 있습니다.
                     </p>
                     <button
                       type="button"

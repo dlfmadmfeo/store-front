@@ -1,6 +1,5 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import MyShoppingMobileNav from "./MyShoppingMobileNav";
 import MyShoppingShell from "./MyShoppingShell";
 import {
@@ -8,11 +7,16 @@ import {
   MyShoppingEmptyState,
   MyShoppingErrorState,
 } from "./MyShoppingStates";
-import { useMyShoppingHomeData } from "./useMyShoppingData";
+import type { MyShoppingHomeData } from "./types";
 
-export default function MyShopping() {
-  const router = useRouter();
-  const { data, isLoading, error } = useMyShoppingHomeData();
+export default function MyShopping({
+  data,
+  error,
+}: {
+  data: MyShoppingHomeData | null;
+  error?: string | null;
+}) {
+  const isLoading = false;
 
   if (error) {
     return (
@@ -101,20 +105,25 @@ export default function MyShopping() {
 
           <div className="grid grid-cols-2 gap-px bg-gray-100 md:grid-cols-4">
             {data.quickLinks.slice(0, 4).map((item) => (
-              <button
-                key={item.title}
-                type="button"
-                className="flex min-h-[108px] flex-col items-center justify-center gap-2 bg-white px-3 py-5 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#09aa5c] sm:min-h-[124px] sm:px-4 sm:py-6"
-                aria-label={`${item.title} 바로가기`}
-                onClick={() => {
-                  if (item.path) {
-                    router.push(item.path);
-                  }
-                }}
-              >
-                <div className="text-sm font-black tracking-[0.18em] text-gray-700">{item.icon}</div>
-                <div className="text-[14px] font-medium text-gray-900 sm:text-[15px]">{item.title}</div>
-              </button>
+              item.path ? (
+                <Link
+                  key={item.title}
+                  href={item.path}
+                  className="flex min-h-[108px] flex-col items-center justify-center gap-2 bg-white px-3 py-5 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#09aa5c] sm:min-h-[124px] sm:px-4 sm:py-6"
+                  aria-label={`${item.title} 바로가기`}
+                >
+                  <div className="text-sm font-black tracking-[0.18em] text-gray-700">{item.icon}</div>
+                  <div className="text-[14px] font-medium text-gray-900 sm:text-[15px]">{item.title}</div>
+                </Link>
+              ) : (
+                <div
+                  key={item.title}
+                  className="flex min-h-[108px] flex-col items-center justify-center gap-2 bg-white px-3 py-5 text-center sm:min-h-[124px] sm:px-4 sm:py-6"
+                >
+                  <div className="text-sm font-black tracking-[0.18em] text-gray-700">{item.icon}</div>
+                  <div className="text-[14px] font-medium text-gray-900 sm:text-[15px]">{item.title}</div>
+                </div>
+              )
             ))}
           </div>
 
@@ -161,6 +170,13 @@ export default function MyShopping() {
                   <div
                     className={`relative h-[200px] overflow-hidden rounded-[14px] bg-gradient-to-br ${product.accent} sm:h-[220px]`}
                   >
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                      className="object-cover"
+                    />
                     <div className="absolute left-3 top-3 rounded-[999px] bg-white/85 px-2.5 py-1 text-[12px] font-semibold text-[#ff5b3d]">
                       {product.badge}
                     </div>

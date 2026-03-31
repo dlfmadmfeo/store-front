@@ -1,11 +1,16 @@
-"use client";
-
 import Link from "next/link";
 import { InlineErrorState, SectionSkeleton } from "@/components/common/SectionSkeleton";
-import { useCategoryMenuData } from "@/domains/navigation/hooks/useCategoryMenuData";
+import Image from "next/image";
+import type { CategoryMenuData } from "@/lib/types/navigation";
 
-export default function CategoryLanding() {
-  const { data, isLoading, error } = useCategoryMenuData();
+export default function CategoryLanding({
+  data,
+  error,
+}: {
+  data: CategoryMenuData | null;
+  error?: string | null;
+}) {
+  const isLoading = false;
 
   return (
     <div className="bg-[#f4f7fb] px-3 py-5 sm:px-4 md:px-6 md:py-6">
@@ -57,12 +62,25 @@ export default function CategoryLanding() {
                     {data.featuredSections.map((section) => (
                       <div
                         key={section.title}
-                        className="rounded-[16px] border border-[#e5e7eb] bg-[#f8fafc] px-4 py-4"
+                        className="overflow-hidden rounded-[16px] border border-[#e5e7eb] bg-[#f8fafc]"
                       >
-                        <p className="text-[13px] font-medium text-[#10b981]">추천</p>
-                        <h3 className="mt-2 text-[16px] font-semibold text-[#111827] sm:text-[17px]">
-                          {section.title}
-                        </h3>
+                        {section.imageUrl ? (
+                          <div className="relative h-[132px]">
+                            <Image
+                              src={section.imageUrl}
+                              alt={section.title}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : null}
+                        <div className="px-4 py-4">
+                          <p className="text-[13px] font-medium text-[#10b981]">추천</p>
+                          <h3 className="mt-2 text-[16px] font-semibold text-[#111827] sm:text-[17px]">
+                            {section.title}
+                          </h3>
+                        </div>
                       </div>
                     ))}
                   </div>
