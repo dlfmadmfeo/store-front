@@ -1,21 +1,24 @@
-# Mobile Web Notes
+# 모바일웹 메모
 
-## Direction
+## 방향
 
-Desktop-first layouts in the project are being adjusted to support mobile-first or mobile-safe behavior.
+데스크톱 중심 레이아웃을 단순 축소하는 방식이 아니라, 작은 화면에서 실제로 사용하기 편한 흐름으로 다시 정리하는 것을 목표로 합니다.
 
-## Current Improvements
+## 현재 반영 내용
 
-- MyShopping has a mobile chip navigation instead of desktop sidebar only.
-- Order cards and profile sections stack on smaller screens.
-- Home event data flow no longer depends on desktop-only assumptions.
-- Signup and login screens now use single-column mobile-safe forms.
-- Search and category result pages are built with stacked layouts first and widen on desktop.
+- 마이쇼핑은 데스크톱 사이드바 대신 모바일 칩형 내비게이션을 제공
+- 주문 카드와 프로필 섹션이 작은 화면에서 자연스럽게 스택되도록 조정
+- 홈 이벤트 데이터 흐름이 데스크톱 전용 가정에 묶이지 않도록 정리
+- 로그인/회원가입은 단일 컬럼 중심의 모바일 안전 폼으로 조정
+- 검색/카테고리 결과 페이지는 모바일에서 먼저 쌓이고 데스크톱에서 확장되는 구조로 정리
+- GNB는 작은 화면에서 검색과 빠른 메뉴를 우선 배치하도록 정리
+- 장바구니 옵션 조절과 액션 버튼은 데스크톱 고정 폭에 덜 의존하도록 조정
+- 마이쇼핑 요약/퀵링크/찜한 상품 카드가 모바일 폭에서 더 안전하게 줄어들도록 조정
 
-## Still Needed
+## 아직 더 볼 것
 
-- GNB behavior on small screens
-- search interaction in narrow widths
-- cart action layout tuning
-- login and signup spacing review
-- touch target size review
+- GNB의 작은 화면 동작을 더 세밀하게 다듬기
+- 좁은 폭에서 검색 인터랙션 밀도 조정
+- 장바구니 액션 영역 간격/우선순위 조정
+- 로그인/회원가입 여백과 터치 타깃 추가 점검
+- 전체 화면의 터치 타깃 최소 크기 재검토

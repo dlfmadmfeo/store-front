@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 
 export default function Login() {
   return (
-    <div className="min-h-screen bg-[#f7f9fb] p-4">
+    <div className="min-h-screen bg-[#f7f9fb] px-4 py-5 sm:py-6">
       <div className="mx-auto max-w-[420px]">
         <div className="flex justify-end">
           <div className="relative w-fit">
@@ -25,11 +25,11 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10">
           <LoginForm />
 
           <div className="mt-4">
-            <ul className="flex justify-center gap-6 text-sm font-medium text-gray-500 sm:gap-10">
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-gray-500 sm:gap-x-10">
               <li>
                 <Link href="/find-pwd">비밀번호 찾기</Link>
               </li>

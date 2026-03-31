@@ -1,37 +1,37 @@
-# Architecture Notes
+# 아키텍처 메모
 
-## Goal
+## 목표
 
-Make the project look and behave more like a real customer-facing frontend service.
+이 프로젝트를 단순한 화면 구현물이 아니라, 대고객 서비스형 프론트엔드처럼 보이고 설명할 수 있는 구조로 만드는 것이 목표입니다.
 
-## Main Rules
+## 핵심 원칙
 
-1. UI components should not own raw fixture data when possible.
-2. Domain data should flow through:
+1. 가능하면 UI 컴포넌트가 fixture 데이터를 직접 가지지 않는다.
+2. 도메인 데이터는 아래 흐름을 따른다.
    `mock -> route handler -> api client -> hook/state -> page/component`
-3. Shared types should live in `src/lib/types`.
-4. Shared async state UI should live in `src/components/common`.
+3. 공통 타입은 `src/lib/types`에 둔다.
+4. 공통 비동기 상태 UI는 `src/components/common`에 둔다.
 
-## Why
+## 이렇게 나눈 이유
 
-This makes the project easier to explain in portfolio reviews and interviews:
+이 구조는 아래 장점이 있습니다.
 
-- data flow is explicit
-- async behavior is visible
-- domain boundaries are clearer
-- later API replacement is cheaper
+- 데이터 흐름이 명확하다.
+- 비동기 상태가 화면에 드러난다.
+- 도메인 경계가 더 선명해진다.
+- 나중에 실제 API로 교체할 때 비용이 줄어든다.
 
-## Current Coverage
+## 현재 반영 범위
 
-- MyShopping: migrated
-- Home today event section: migrated
-- Auth login/signup: migrated to route-backed mock APIs
-- Cart seed data loading: migrated
-- Basic route handlers: added for auth, cart, home, and myshopping
-- Search panel, search results, and category menu: migrated
+- 마이쇼핑: 반영 완료
+- 홈 오늘의 이벤트 영역: 반영 완료
+- 인증 로그인/회원가입: route handler 기반 mock API로 정리
+- 장바구니 초기 데이터 로딩: 반영 완료
+- auth / cart / home / myshopping 기본 route handler: 추가 완료
+- 검색 패널 / 검색 결과 / 카테고리 메뉴: 반영 완료
 
-## Next Expansion Areas
+## 다음 확장 후보
 
-- search domain
-- category data flow
-- product detail and checkout-like flows
+- 상품 상세 도메인
+- 결제 직전 플로우
+- 운영 도구성 화면

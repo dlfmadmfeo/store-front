@@ -8,14 +8,14 @@ export default function CategoryLanding() {
   const { data, isLoading, error } = useCategoryMenuData();
 
   return (
-    <div className="bg-[#f4f7fb] px-3 py-6 sm:px-4 md:px-6">
+    <div className="bg-[#f4f7fb] px-3 py-5 sm:px-4 md:px-6 md:py-6">
       <div className="mx-auto max-w-[1280px]">
-        <section className="rounded-[18px] bg-white px-5 py-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-7">
+        <section className="rounded-[18px] bg-white px-4 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6 sm:py-6">
           <p className="text-[13px] font-medium text-[#5f6672]">카테고리</p>
-          <h1 className="mt-2 text-[28px] font-bold tracking-[-0.03em] text-[#111827] sm:text-[32px]">
+          <h1 className="mt-2 text-[24px] font-bold tracking-[-0.03em] text-[#111827] sm:text-[28px] md:text-[32px]">
             상품 탐색 허브
           </h1>
-          <p className="mt-3 text-[15px] text-[#6b7280]">
+          <p className="mt-3 text-[14px] text-[#6b7280] sm:text-[15px]">
             사용자가 빠르게 카테고리와 세부 분류를 탐색할 수 있도록 구성한 모바일/데스크톱 공용 화면입니다.
           </p>
         </section>
@@ -37,7 +37,7 @@ export default function CategoryLanding() {
             <>
               <section className="rounded-[18px] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
                 <h2 className="px-2 text-[18px] font-bold text-[#111827]">전체 카테고리</h2>
-                <div className="mt-4 grid gap-1">
+                <div className="mt-4 grid gap-1 sm:grid-cols-2 lg:grid-cols-1">
                   {data.primaryCategories.map((item) => (
                     <button
                       key={item}
@@ -51,8 +51,8 @@ export default function CategoryLanding() {
               </section>
 
               <div className="space-y-5">
-                <section className="rounded-[18px] bg-white px-5 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6">
-                  <h2 className="text-[20px] font-bold text-[#111827]">큐레이션 영역</h2>
+                <section className="rounded-[18px] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6 sm:py-5">
+                  <h2 className="text-[18px] font-bold text-[#111827] sm:text-[20px]">큐레이션 영역</h2>
                   <div className="mt-4 grid gap-3 md:grid-cols-3">
                     {data.featuredSections.map((section) => (
                       <div
@@ -60,14 +60,16 @@ export default function CategoryLanding() {
                         className="rounded-[16px] border border-[#e5e7eb] bg-[#f8fafc] px-4 py-4"
                       >
                         <p className="text-[13px] font-medium text-[#10b981]">추천</p>
-                        <h3 className="mt-2 text-[17px] font-semibold text-[#111827]">{section.title}</h3>
+                        <h3 className="mt-2 text-[16px] font-semibold text-[#111827] sm:text-[17px]">
+                          {section.title}
+                        </h3>
                       </div>
                     ))}
                   </div>
                 </section>
 
-                <section className="rounded-[18px] bg-white px-5 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6">
-                  <h2 className="text-[20px] font-bold text-[#111827]">세부 분류</h2>
+                <section className="rounded-[18px] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-6 sm:py-5">
+                  <h2 className="text-[18px] font-bold text-[#111827] sm:text-[20px]">세부 분류</h2>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {data.secondaryCategories.map((item) => (
                       <Link

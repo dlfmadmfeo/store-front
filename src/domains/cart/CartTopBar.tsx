@@ -29,7 +29,10 @@ export default function CartTopBar() {
             <span className="text-gray-500">오늘출발 상품 {selectedCount}</span>
           </div>
 
-          <div className="hidden items-center gap-2 whitespace-nowrap text-[14px] md:flex">
+          <nav
+            aria-label="주문 진행 단계"
+            className="hidden items-center gap-2 whitespace-nowrap text-[14px] md:flex"
+          >
             <span className="font-semibold text-black">장바구니</span>
             <span className="text-gray-300">
               <ChevronRightIcon />
@@ -39,7 +42,7 @@ export default function CartTopBar() {
               <ChevronRightIcon />
             </span>
             <span className="text-gray-400">완료</span>
-          </div>
+          </nav>
         </div>
       </div>
 

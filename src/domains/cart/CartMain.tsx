@@ -13,7 +13,7 @@ export default function CartMain() {
   const getProductDiscountRate = useCartStore((s) => s.getProductDiscountRate);
 
   return (
-    <div className="card-main w-full">
+    <section aria-label="장바구니 상품 목록" className="card-main w-full">
       {products.map((product, index) => {
         const discountRate = getProductDiscountRate(product.id);
         const productTotalPrice = product.options.reduce(
@@ -22,11 +22,8 @@ export default function CartMain() {
         );
 
         return (
-          <article
-            className="mt-2 w-full rounded-lg bg-white p-4"
-            key={product.id}
-          >
-            <div className="flex items-center justify-between">
+          <article key={product.id} className="mt-2 w-full rounded-lg bg-white p-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -35,12 +32,14 @@ export default function CartMain() {
                   onChange={() => toggleProduct(product.id)}
                   aria-label={`${product.storeName} 상품 선택`}
                 />
-                <span className="text-[18px] font-extrabold tracking-tight">{product.storeName}</span>
+                <span className="text-[17px] font-extrabold tracking-tight sm:text-[18px]">
+                  {product.storeName}
+                </span>
               </div>
 
               <button
                 type="button"
-                className="flex w-[92px] cursor-pointer items-center justify-center rounded-[4px] border border-[#d40022] bg-[rgba(212,0,34,.08)] px-2 py-1 text-[12px] font-bold text-[#d40022]"
+                className="flex w-full items-center justify-center rounded-[6px] border border-[#d40022] bg-[rgba(212,0,34,.08)] px-3 py-2 text-[12px] font-bold text-[#d40022] sm:w-[96px]"
               >
                 <CouponIcon />
                 <span className="ml-1">쿠폰받기</span>
@@ -67,12 +66,7 @@ export default function CartMain() {
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2 text-[14px]">
                   <span className="font-bold text-naver">오늘출발</span>
-                  <span className="text-gray-700">
-                    {product.shippingText ?? "오늘출발 기준 배송 예정"}
-                  </span>
-                  <span className="text-[13px] text-gray-400" aria-hidden="true">
-                    •
-                  </span>
+                  <span className="text-gray-700">{product.shippingText ?? "오늘출발 기준 배송 예정"}</span>
                 </div>
 
                 <div className="mt-2 text-[14px] leading-5 text-gray-900">
@@ -90,26 +84,24 @@ export default function CartMain() {
                   </div>
                   <div className="flex items-end gap-2">
                     <span className="text-[16px] font-extrabold text-[#d40022]">{discountRate}%</span>
-                    <span className="text-[20px] font-extrabold">
-                      {product.salePrice.toLocaleString()}원
-                    </span>
+                    <span className="text-[20px] font-extrabold">{product.salePrice.toLocaleString()}원</span>
                   </div>
-                  <div className="mt-1 text-[12px] text-gray-400">회원가 예상 혜택</div>
+                  <div className="mt-1 text-[12px] text-gray-500">회원가 이상 혜택</div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-2 space-y-2">
+            <div className="mt-3 space-y-2">
               {product.options.map((option) => (
-                <div
-                  key={option.id}
-                  className="rounded-[10px] bg-gray-100 px-3 py-3"
-                >
-                  <div className="flex flex-col gap-3 py-2 md:flex-row md:items-center md:justify-between">
+                <div key={option.id} className="rounded-[10px] bg-gray-100 px-3 py-3">
+                  <div className="flex flex-col gap-3 py-1 md:flex-row md:items-center md:justify-between">
                     <div className="text-[14px] text-gray-900">{option.name}</div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="inline-flex items-center overflow-hidden rounded-[6px] border border-gray-300 bg-white">
+                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:flex sm:gap-3">
+                      <div
+                        className="inline-flex items-center overflow-hidden rounded-[6px] border border-gray-300 bg-white"
+                        aria-label={`${option.name} 수량 조절`}
+                      >
                         <button
                           type="button"
                           className="flex h-8 w-8 items-center justify-center text-[18px] text-gray-700"
@@ -131,7 +123,7 @@ export default function CartMain() {
                         </button>
                       </div>
 
-                      <div className="w-[90px] text-right font-semibold">
+                      <div className="text-right font-semibold sm:w-[90px]">
                         {(option.unitSalePrice * option.count).toLocaleString()}원
                       </div>
 
@@ -179,6 +171,6 @@ export default function CartMain() {
           <div className="text-[18px] font-extrabold">{totalPrice().toLocaleString()}원</div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

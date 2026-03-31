@@ -11,7 +11,10 @@ export default function MyShoppingShell({
   mobileNavigation?: ReactNode;
 }) {
   return (
-    <div className="bg-[#eef2f5]">
+    <section
+      aria-label="마이쇼핑 페이지"
+      className="bg-[#eef2f5]"
+    >
       <div className="px-2">
         <div className="mx-auto max-w-[1280px] py-4 md:py-6">
           {mobileNavigation ? <div className="mb-4 md:hidden">{mobileNavigation}</div> : null}
@@ -22,6 +25,6 @@ export default function MyShoppingShell({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

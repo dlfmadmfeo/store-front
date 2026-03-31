@@ -63,17 +63,14 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f9fb] px-4 py-6">
+    <div className="min-h-screen bg-[#f7f9fb] px-4 py-5 sm:py-6">
       <div className="mx-auto max-w-[460px]">
-        <div className="mb-6 flex items-end justify-between">
+        <div className="mb-5 flex items-end justify-between">
           <h1 className="text-[28px] font-extrabold leading-none tracking-[-2px] text-[#03c75a]">
             NAVER
           </h1>
 
-          <button
-            type="button"
-            className="flex items-center justify-end text-[12px] text-[#8e8e8e]"
-          >
+          <button type="button" className="flex items-center justify-end text-[12px] text-[#8e8e8e]">
             다른 계정으로 가입
             <ChevronDownIcon className="ml-[4px] h-[14px] w-[14px] text-[#b8b8b8]" />
           </button>
@@ -81,13 +78,10 @@ export default function Signup() {
 
         <section
           aria-labelledby="signup-title"
-          className="rounded-[18px] bg-white px-4 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+          className="rounded-[18px] bg-white px-4 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] sm:px-5"
         >
           <div className="mb-5">
-            <h2
-              id="signup-title"
-              className="text-[24px] font-bold text-[#111827]"
-            >
+            <h2 id="signup-title" className="text-[22px] font-bold text-[#111827] sm:text-[24px]">
               회원가입
             </h2>
             <p className="mt-2 text-[14px] text-[#6b7280]">
@@ -95,13 +89,17 @@ export default function Signup() {
             </p>
           </div>
 
-          <div className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleSubmit();
+            }}
+            aria-describedby="signup-feedback"
+          >
             <Field label="아이디">
               <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
-                <UserIcon
-                  className="h-[20px] w-[20px] text-[#b8b8b8]"
-                  size={24}
-                />
+                <UserIcon className="h-[20px] w-[20px] text-[#b8b8b8]" size={24} />
                 <input
                   type="text"
                   value={form.userId}
@@ -110,16 +108,13 @@ export default function Signup() {
                   className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[#222] outline-none placeholder:text-[#b8b8b8]"
                   aria-label="아이디"
                 />
-                <span className="text-[15px] text-[#8e8e8e]">@naver.com</span>
+                <span className="shrink-0 text-[14px] text-[#8e8e8e] sm:text-[15px]">@naver.com</span>
               </div>
             </Field>
 
             <Field label="비밀번호">
               <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
-                <LockIcon
-                  className="h-[20px] w-[20px] text-[#b8b8b8]"
-                  size={20}
-                />
+                <LockIcon className="h-[20px] w-[20px] text-[#b8b8b8]" size={20} />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={form.password}
@@ -133,20 +128,14 @@ export default function Signup() {
                   aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
                   onClick={() => setShowPassword((current) => !current)}
                 >
-                  <EyeOffIcon
-                    className="h-[20px] w-[20px] text-[#b8b8b8]"
-                    useSlash={!showPassword}
-                  />
+                  <EyeOffIcon className="h-[20px] w-[20px] text-[#b8b8b8]" useSlash={!showPassword} />
                 </button>
               </div>
             </Field>
 
             <Field label="이메일">
               <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
-                <EmailIcon
-                  className="h-[20px] w-[20px] text-[#b8b8b8]"
-                  size={20}
-                />
+                <EmailIcon className="h-[20px] w-[20px] text-[#b8b8b8]" size={20} />
                 <input
                   type="email"
                   value={form.email ?? ""}
@@ -161,10 +150,7 @@ export default function Signup() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="이름">
                 <div className="flex items-center gap-3 rounded-[12px] border border-[#d9dcdf] px-4 py-4">
-                  <UserIcon
-                    className="h-[20px] w-[20px] text-[#b8b8b8]"
-                    size={20}
-                  />
+                  <UserIcon className="h-[20px] w-[20px] text-[#b8b8b8]" size={20} />
                   <input
                     type="text"
                     value={form.name}
@@ -193,22 +179,13 @@ export default function Signup() {
 
             <Field label="성별">
               <div className="grid h-[52px] grid-cols-3 overflow-hidden rounded-[12px] border border-[#d9dcdf]">
-                <GenderButton
-                  active={form.gender === "male"}
-                  onClick={() => updateField("gender", "male")}
-                >
+                <GenderButton active={form.gender === "male"} onClick={() => updateField("gender", "male")}>
                   남자
                 </GenderButton>
-                <GenderButton
-                  active={form.gender === "female"}
-                  onClick={() => updateField("gender", "female")}
-                >
+                <GenderButton active={form.gender === "female"} onClick={() => updateField("gender", "female")}>
                   여자
                 </GenderButton>
-                <GenderButton
-                  active={form.gender === "none"}
-                  onClick={() => updateField("gender", "none")}
-                >
+                <GenderButton active={form.gender === "none"} onClick={() => updateField("gender", "none")}>
                   선택안함
                 </GenderButton>
               </div>
@@ -223,10 +200,11 @@ export default function Signup() {
                 <button
                   type="button"
                   className="flex w-full items-center justify-between rounded-[12px] border border-[#d9dcdf] px-4 py-4"
+                  aria-label="국가 코드 선택"
                 >
-                  <div className="flex items-center gap-3">
-                    <GlobeIcon className="h-[20px] w-[20px] text-[#666]" />
-                    <span className="text-[16px] text-[#222]">대한민국 {form.countryCode}</span>
+                  <div className="flex min-w-0 items-center gap-3">
+                    <GlobeIcon className="h-[20px] w-[20px] shrink-0 text-[#666]" />
+                    <span className="truncate text-[16px] text-[#222]">대한민국 {form.countryCode}</span>
                   </div>
                   <ChevronDownIcon className="h-[18px] w-[18px] text-[#b8b8b8]" />
                 </button>
@@ -244,29 +222,26 @@ export default function Signup() {
                 </div>
               </div>
             </Field>
-          </div>
 
-          {feedback ? (
             <p
-              className={`mt-5 text-[14px] font-medium ${feedback.type === "success" ? "text-[#16a34a]" : "text-[#dc2626]"}`}
-              role="status"
+              id="signup-feedback"
+              className={`text-[14px] font-medium ${feedback?.type === "success" ? "text-[#16a34a]" : "text-[#dc2626]"}`}
+              role={feedback ? "status" : undefined}
+              aria-live="polite"
             >
-              {feedback.message}
+              {feedback?.message ?? ""}
             </p>
-          ) : null}
 
-          <div className="pt-6">
-            <button
-              type="button"
-              className="h-[56px] w-full rounded-[12px] bg-[#09b83e] text-[18px] font-bold text-white disabled:bg-[#9fd8b0]"
-              onClick={() => {
-                void handleSubmit();
-              }}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "가입 요청 중..." : "가입 요청"}
-            </button>
-          </div>
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="h-[56px] w-full rounded-[12px] bg-[#09b83e] text-[17px] font-bold text-white disabled:bg-[#9fd8b0] sm:text-[18px]"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "가입 요청 중..." : "가입 요청"}
+              </button>
+            </div>
+          </form>
         </section>
       </div>
     </div>
@@ -297,7 +272,7 @@ function GenderButton({
       aria-pressed={active}
       onClick={onClick}
       className={[
-        "border-r border-[#d9dcdf] text-[15px] transition-colors last:border-r-0",
+        "border-r border-[#d9dcdf] px-1 text-[14px] transition-colors last:border-r-0 sm:text-[15px]",
         active ? "bg-[#effcf4] font-semibold text-[#03c75a]" : "bg-white text-[#666]",
       ].join(" ")}
     >

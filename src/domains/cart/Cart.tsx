@@ -2,10 +2,10 @@
 
 import { InlineErrorState, SectionSkeleton } from "@/components/common/SectionSkeleton";
 import CartAside from "./CartAside";
-import { useCartData } from "./hooks/useCartData";
 import CartEmpty from "./CartEmpty";
 import CartMain from "./CartMain";
 import CartTopBar from "./CartTopBar";
+import { useCartData } from "./hooks/useCartData";
 
 export default function Cart() {
   const { products, isLoading, error } = useCartData();
@@ -15,8 +15,8 @@ export default function Cart() {
       <hr className="py-0 text-gray-200" />
       <CartTopBar />
 
-      <div className="content bg-[#f1f4f6]">
-        <div className="mx-auto max-w-[1280px] gap-[20px] p-2 md:flex md:justify-between">
+      <section aria-label="장바구니 본문" className="content bg-[#f1f4f6]">
+        <div className="mx-auto max-w-[1280px] gap-4 p-2 md:flex md:justify-between md:gap-5">
           {error ? (
             <div className="w-full py-4">
               <InlineErrorState
@@ -38,7 +38,7 @@ export default function Cart() {
             </>
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 }

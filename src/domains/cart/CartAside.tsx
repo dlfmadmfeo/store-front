@@ -20,7 +20,10 @@ export default function CartAside() {
 
   return (
     <>
-      <aside className="my-2 w-full shrink-0 rounded-lg bg-white p-4 md:w-[360px]">
+      <aside
+        aria-label="주문 예상 금액"
+        className="my-2 w-full shrink-0 rounded-lg bg-white p-4 md:w-[360px]"
+      >
         <div className="text-[18px] font-bold">주문 예상 금액</div>
 
         <div className="mt-4 space-y-2 text-[14px]">
@@ -57,6 +60,7 @@ export default function CartAside() {
             type="button"
             className="flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[6px] bg-naver text-[16px] font-bold text-white"
             onClick={handleOrderClick}
+            aria-label={`주문하기, 선택 상품 ${selectedCount}개`}
           >
             주문하기
             <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-black text-[12px] font-extrabold leading-none">
@@ -68,7 +72,7 @@ export default function CartAside() {
             type="button"
             className="h-[52px] w-full cursor-pointer rounded-[6px] border border-naver bg-white text-[16px] font-bold text-naver"
           >
-            선물하기
+            찜하기
           </button>
         </div>
       </aside>

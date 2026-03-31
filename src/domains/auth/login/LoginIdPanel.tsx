@@ -46,7 +46,14 @@ export default function LoginIdPanel() {
   };
 
   return (
-    <div className="login_box">
+    <form
+      className="login_box"
+      onSubmit={(event) => {
+        event.preventDefault();
+        void login();
+      }}
+      aria-describedby="login-feedback"
+    >
       <div className="relative -mb-[1px] rounded-tl-xl rounded-tr-lg border border-gray-300 p-2">
         <input
           autoFocus
@@ -54,12 +61,8 @@ export default function LoginIdPanel() {
           className="peer w-full bg-transparent pb-1 pl-2 pt-4 outline-none"
           value={userId}
           onChange={(event) => setUserId(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              void login();
-            }
-          }}
           aria-label="아이디"
+          aria-invalid={Boolean(loginValidMsg) && !userId}
         />
         <label
           className={[
@@ -100,12 +103,8 @@ export default function LoginIdPanel() {
           className="peer w-full bg-transparent pb-1 pl-2 pt-4 outline-none"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              void login();
-            }
-          }}
           aria-label="비밀번호"
+          aria-invalid={Boolean(loginValidMsg) && !password}
         />
         <button
           tabIndex={-1}
@@ -170,9 +169,12 @@ export default function LoginIdPanel() {
         </button>
 
         <div className="ip_check mt-[8px] flex">
-          <a href="">
-            <span className="text-sm text-gray-500">IP보안</span>
-          </a>
+          <button
+            type="button"
+            className="text-sm text-gray-500"
+          >
+            IP보안
+          </button>
 
           <div className="ml-2">
             <Switch checked />
@@ -181,24 +183,26 @@ export default function LoginIdPanel() {
       </div>
 
       <div className="mt-2">
-        <div className="py-1 text-sm font-medium text-red-500">
+        <div
+          id="login-feedback"
+          className="py-1 text-sm font-medium text-red-500"
+          role={loginValidMsg ? "alert" : undefined}
+          aria-live="polite"
+        >
           <span>{loginValidMsg}</span>
         </div>
 
         <button
-          type="button"
+          type="submit"
           disabled={loading}
           className={[
             "w-full cursor-pointer rounded-md py-3 font-bold text-white",
             userId && password ? "bg-naver" : "bg-gray-400",
           ].join(" ")}
-          onClick={() => {
-            void login();
-          }}
         >
           {loading ? "로그인 중..." : "로그인"}
         </button>
       </div>
-    </div>
+    </form>
   );
 }

@@ -1,32 +1,35 @@
-# Accessibility Notes
+# 접근성 메모
 
-## Current Direction
+## 현재 방향
 
-The project is being updated to include baseline accessibility support:
+프로젝트 전반에 아래 수준의 기본 접근성을 반영하는 것을 목표로 하고 있습니다.
 
-- `aria-label` on icon-only buttons
-- `aria-current` for active navigation
-- `aria-pressed` for filter/toggle buttons
-- visible keyboard focus using `focus-visible`
-- clearer heading structure on major pages
+- 아이콘 전용 버튼에 `aria-label` 부여
+- 활성 메뉴에 `aria-current` 반영
+- 토글형 버튼에 `aria-pressed` 반영
+- `focus-visible` 기반 키보드 포커스 표시
+- 주요 화면 heading 구조 정리
 
-## Gaps Still Remaining
+## 아직 더 볼 것
 
-- broader keyboard navigation review
-- color contrast review
-- form validation messaging consistency
-- hover-only interaction fallbacks
-- semantic landmark review across layouts
+- 키보드만으로 전체 흐름 사용 가능한지
+- 명도 대비가 충분한지
+- 폼 검증 메시지 방식이 일관적인지
+- hover 전용 인터랙션에 대체 경로가 있는지
+- layout 단위 semantic landmark가 충분한지
 
-## Recent Improvements
+## 최근 반영 내용
 
-- signup and login forms now have clearer labels and submit feedback
-- category menu and myshopping popovers expose menu labels and focus targets
-- search and category landing pages provide explicit headings and empty/error states
+- 로그인/회원가입 폼에 더 명확한 라벨과 제출 피드백 추가
+- 카테고리 메뉴와 마이쇼핑 팝오버에 menu label 및 포커스 타깃 보강
+- 검색/카테고리 화면에 heading, empty/error 상태 명시
+- public layout에 본문 바로가기 skip link 추가
+- 장바구니/마이쇼핑에 section label과 버튼 이름 정리
+- 검색 입력창과 제안 패널을 `aria-expanded`, `aria-controls`로 연결
 
-## Review Checklist
+## 점검 체크리스트
 
-- Can the page be used with keyboard only?
-- Can icon-only controls be understood by screen readers?
-- Is active navigation announced?
-- Are loading and error states understandable without visuals only?
+- 키보드만으로 페이지를 사용할 수 있는가
+- 아이콘만 있는 컨트롤을 스크린리더가 이해할 수 있는가
+- 현재 활성 내비게이션이 전달되는가
+- 로딩/에러 상태가 시각 정보 없이도 이해 가능한가
