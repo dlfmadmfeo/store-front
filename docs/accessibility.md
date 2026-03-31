@@ -26,6 +26,7 @@
 - public layout에 본문 바로가기 skip link 추가
 - 장바구니/마이쇼핑에 section label과 버튼 이름 정리
 - 검색 입력창과 제안 패널을 `aria-expanded`, `aria-controls`로 연결
+- 운영 주문 관리 화면에 검색/필터 라벨, 선택 상태, 저장 피드백 live region 추가
 
 ## 점검 체크리스트
 

@@ -100,6 +100,46 @@ pnpm dev
 - `src/app/(public)/search/page.tsx`
 - `src/app/(public)/category/page.tsx`
 
+### 운영 도구성 화면
+
+카카오뱅크 공고의 `운영 도구 개발 및 관리 효율화` 항목을 의식해서 주문 운영 관리 화면을 추가했습니다.
+
+- `src/app/(public)/ops/orders/page.tsx`
+- `src/domains/operations/OrderOperationsPage.tsx`
+- `src/lib/api/operations.ts`
+- `src/app/api/operations/orders/route.ts`
+
+이 화면에서는 아래 흐름을 한 번에 보여줄 수 있습니다.
+
+- 주문 검색
+- 상태별 필터링
+- 웹 / 앱 유입 채널 분리
+- 운영 메모 수정
+- 주문 상태 변경
+
+즉, 대고객 화면만 구현한 프로젝트가 아니라 운영 관점의 프론트엔드 화면도 설계할 수 있다는 점을 설명하기 쉽게 만들었습니다.
+
+### 웹뷰 / 딥링크 진입
+
+모바일웹과 앱 웹뷰 경계 경험을 보여주기 위해 마이쇼핑 주문 화면에 딥링크 진입 처리를 추가했습니다.
+
+- 예시 진입 경로
+  `/myshop/orders?entry=app&filter=shipping&orderId=order-2`
+
+적용한 동작은 아래와 같습니다.
+
+- `entry=app`이면 웹뷰 진입 안내 배너 노출
+- `orderId`가 있으면 해당 주문 카드를 상단으로 올리고 강조 표시
+- `filter` 값으로 주문 상태 탭 초기값 맞춤
+- 운영 화면에서 선택한 주문을 `앱 웹뷰 주문 화면으로 열기` 버튼으로 바로 재현 가능
+- 주문 화면 안에서도 `앱 웹뷰 진입 링크로 보기` 버튼으로 링크 생성 방식 확인 가능
+
+관련 구현은 아래 파일에 있습니다.
+
+- `src/domains/myshopping/MyShoppingOrders.tsx`
+- `src/app/api/myshopping/orders/route.ts`
+- `src/domains/myshopping/mockData.ts`
+
 ## 왜 이렇게 정리했는가
 
 이 구조는 포트폴리오나 면접에서 아래 내용을 설명하기 쉽게 만들어 줍니다.
@@ -108,6 +148,8 @@ pnpm dev
 - 로딩과 실패 상황에서 UI가 어떻게 반응하는지
 - 모바일웹을 어디까지 고려했는지
 - 공통 타입과 공통 상태 UI를 어떻게 재사용했는지
+- 운영 화면과 고객 화면을 어떤 기준으로 나눴는지
+- 앱 웹뷰 진입 시 URL 파라미터를 화면 상태에 어떻게 연결했는지
 
 또한 나중에 mock 데이터를 실제 REST API로 바꿀 때 수정 범위를 줄이는 데도 도움이 됩니다.
 

@@ -18,9 +18,17 @@ export async function GET(request: Request) {
     filtered = filtered.filter((order) => order.status === "구매확정완료");
   }
 
+  if (filter === "shipping") {
+    filtered = filtered.filter((order) => ["배송준비중", "배송중"].includes(order.status));
+  }
+
+  if (filter === "issue") {
+    filtered = filtered.filter((order) => ["교환접수", "환불처리중"].includes(order.status));
+  }
+
   if (normalizedQuery) {
     filtered = filtered.filter((order) =>
-      [order.title, order.orderedAt, order.status].some((value) =>
+      [order.title, order.orderedAt, order.status, order.orderNumber].some((value) =>
         value.toLowerCase().includes(normalizedQuery),
       ),
     );

@@ -27,14 +27,27 @@ export type MyShoppingProfileSummary = {
   benefitLabel: string;
 };
 
+export type OrderStatus =
+  | "구매확정완료"
+  | "배송준비중"
+  | "배송중"
+  | "교환접수"
+  | "환불처리중";
+
 export type MyShoppingOrder = {
   id: string;
-  status: string;
+  orderNumber: string;
+  customerName: string;
+  status: OrderStatus;
   orderedAt: string;
   title: string;
   priceLabel: string;
   sellerActionLabel: string;
   imageClass: string;
+  paymentMethod: string;
+  shippingAddress: string;
+  managementMemo: string;
+  channel: "web" | "app";
 };
 
 export type MyShoppingHomeData = {
@@ -43,7 +56,7 @@ export type MyShoppingHomeData = {
   likedProducts: MyShoppingLikedProduct[];
 };
 
-export type OrderFilter = "all" | "completed";
+export type OrderFilter = "all" | "completed" | "shipping" | "issue";
 
 export type MyShoppingOrdersData = {
   orders: MyShoppingOrder[];
