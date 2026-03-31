@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 
 export function SectionSkeleton({
@@ -17,10 +15,7 @@ export function SectionSkeleton({
       <div className={`h-5 animate-pulse rounded bg-gray-100 ${titleWidth}`} />
       <div className="mt-4 space-y-3">
         {Array.from({ length: lines }).map((_, index) => (
-          <div
-            key={index}
-            className="h-4 animate-pulse rounded bg-gray-100"
-          />
+          <div key={index} className="h-4 animate-pulse rounded bg-gray-100" />
         ))}
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { mockTodayEvents } from "@/lib/mock/home";
 import type { PromoItem } from "@/lib/types/home";
 
 async function parseJson<T>(response: Response): Promise<T> {
@@ -15,4 +16,12 @@ export async function fetchTodayEvents(): Promise<PromoItem[]> {
   });
 
   return parseJson<PromoItem[]>(response);
+}
+
+export async function getTodayEventsData(): Promise<PromoItem[]> {
+  if (typeof window === "undefined") {
+    return mockTodayEvents;
+  }
+
+  return fetchTodayEvents();
 }
