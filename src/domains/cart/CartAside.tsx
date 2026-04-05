@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import AlertModal from "@/components/AlertModal";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function CartAside() {
+  const router = useRouter();
   const totalOriginalPrice = useCartStore((s) => s.totalOriginalPrice());
   const totalSalePrice = useCartStore((s) => s.totalSalePrice());
   const totalDiscount = useCartStore((s) => s.totalDiscount());
@@ -16,6 +18,8 @@ export default function CartAside() {
       setIsEmptyOrderModalOpen(true);
       return;
     }
+
+    router.push("/checkout");
   };
 
   return (

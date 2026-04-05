@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type { LoginPayload } from "@/lib/types/auth";
 import { useAddressStore } from "./useAddressStore";
 
@@ -17,35 +18,41 @@ type UserState = {
   setUser: (user: User | null) => void;
 };
 
-export const useUserStore = create<UserState>((set) => ({
-  user: null,
-  isLoggedIn: false,
-
-  login: (user) => {
-    set({
-      user,
-      isLoggedIn: true,
-    });
-  },
-
-  logout: () => {
-    set({
+export const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
       user: null,
       isLoggedIn: false,
-    });
 
-    // 로그아웃 시 배송지 상태 초기화
-    useAddressStore.getState().reset();
-  },
+      login: (user) => {
+        set({
+          user,
+          isLoggedIn: true,
+        });
+      },
 
-  setUser: (user) => {
-    set({
-      user,
-      isLoggedIn: !!user,
-    });
+      logout: () => {
+        set({
+          user: null,
+          isLoggedIn: false,
+        });
 
-    if (!user) {
-      useAddressStore.getState().reset();
-    }
-  },
-}));
+        useAddressStore.getState().reset();
+      },
+
+      setUser: (user) => {
+        set({
+          user,
+          isLoggedIn: !!user,
+        });
+
+        if (!user) {
+          useAddressStore.getState().reset();
+        }
+      },
+    }),
+    {
+      name: "user-store",
+    },
+  ),
+);

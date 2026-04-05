@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { useUserStore } from "./useUserStore";
 
 export type ShippingAddress = {
@@ -31,90 +32,95 @@ type AddressState = {
 const initialAddresses: ShippingAddress[] = [
   {
     id: "addr-1",
-    recipient: "조준희",
-    roadAddress: "서울특별시 성북구 길음로9길 40",
-    detailAddress: "(길음동, 래미안길음1차) 108동 1602호",
+    recipient: "조주연",
+    roadAddress: "서울특별시 성북구 길음로길 40",
+    detailAddress: "(길음동 삼성래미안) 108동 1602호",
     zipCode: "02725",
     phone: "010-1234-5678",
-    deliveryMemo: "문 앞에 놓아주세요",
+    deliveryMemo: "문 앞에 놓아주세요.",
     isDefault: true,
   },
 ];
 
-export const useAddressStore = create<AddressState>((set, get) => ({
-  addresses: initialAddresses,
-  selectedAddressId: "addr-1",
+export const useAddressStore = create<AddressState>()(
+  persist(
+    (set, get) => ({
+      addresses: initialAddresses,
+      selectedAddressId: "addr-1",
 
-  selectedAddress: () => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return null;
+      selectedAddress: () => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return null;
 
-    const { addresses, selectedAddressId } = get();
-    if (!selectedAddressId) return null;
+        const { addresses, selectedAddressId } = get();
+        if (!selectedAddressId) return null;
 
-    return addresses.find((address) => address.id === selectedAddressId) ?? null;
-  },
+        return addresses.find((address) => address.id === selectedAddressId) ?? null;
+      },
 
-  setAddresses: (addresses) => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
+      setAddresses: (addresses) => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return;
 
-    set({
-      addresses,
-      selectedAddressId: addresses[0]?.id ?? null,
-    });
-  },
+        set({
+          addresses,
+          selectedAddressId: addresses[0]?.id ?? null,
+        });
+      },
 
-  setSelectedAddress: (id) => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
+      setSelectedAddress: (id) => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return;
 
-    set({ selectedAddressId: id });
-  },
+        set({ selectedAddressId: id });
+      },
 
-  addAddress: (address) => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
+      addAddress: (address) => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return;
 
-    set((state) => ({
-      addresses: [...state.addresses, address],
-    }));
-  },
+        set((state) => ({
+          addresses: [...state.addresses, address],
+        }));
+      },
 
-  updateAddress: (updatedAddress) => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
+      updateAddress: (updatedAddress) => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return;
 
-    set((state) => ({
-      addresses: state.addresses.map((address) =>
-        address.id === updatedAddress.id ? updatedAddress : address
-      ),
-    }));
-  },
+        set((state) => ({
+          addresses: state.addresses.map((address) =>
+            address.id === updatedAddress.id ? updatedAddress : address,
+          ),
+        }));
+      },
 
-  removeAddress: (id) => {
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
+      removeAddress: (id) => {
+        const { isLoggedIn } = useUserStore.getState();
+        if (!isLoggedIn) return;
 
-    set((state) => {
-      const nextAddresses = state.addresses.filter((address) => address.id !== id);
+        set((state) => {
+          const nextAddresses = state.addresses.filter((address) => address.id !== id);
 
-      const nextSelectedAddressId =
-        state.selectedAddressId === id
-          ? (nextAddresses[0]?.id ?? null)
-          : state.selectedAddressId;
+          const nextSelectedAddressId =
+            state.selectedAddressId === id ? (nextAddresses[0]?.id ?? null) : state.selectedAddressId;
 
-      return {
-        addresses: nextAddresses,
-        selectedAddressId: nextSelectedAddressId,
-      };
-    });
-  },
+          return {
+            addresses: nextAddresses,
+            selectedAddressId: nextSelectedAddressId,
+          };
+        });
+      },
 
-  reset: () => {
-    set({
-      addresses: [],
-      selectedAddressId: null,
-    });
-  },
-}));
+      reset: () => {
+        set({
+          addresses: [],
+          selectedAddressId: null,
+        });
+      },
+    }),
+    {
+      name: "address-store",
+    },
+  ),
+);
