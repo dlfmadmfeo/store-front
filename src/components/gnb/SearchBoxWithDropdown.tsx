@@ -26,25 +26,25 @@ type Props = {
   onSearch?: (keyword: string) => void;
 };
 
-const defaultRecommendKeywords = ["말차", "갤럭시S26", "코트", "케이스티파이"];
-const defaultBenefitChips = [{ label: "스타일 위크 단독 특가" }];
+const defaultRecommendKeywords = ["맥북", "갤럭시S26", "코트", "케이스티파이"];
+const defaultBenefitChips = [{ label: "스토어픽 단독 혜택" }];
 const defaultTrendKeywords: TrendItem[] = [
-  { rank: 1, keyword: "말차", status: "same" },
+  { rank: 1, keyword: "맥북", status: "same" },
   { rank: 2, keyword: "초콜릿 치즈케이크", status: "same" },
   { rank: 3, keyword: "케이스티파이", status: "same" },
-  { rank: 4, keyword: "닌텐도스위치2", status: "same" },
-  { rank: 5, keyword: "아이폰17", status: "same" },
+  { rank: 4, keyword: "닌텐도 스위치2", status: "same" },
+  { rank: 5, keyword: "아이폰 17", status: "same" },
   { rank: 6, keyword: "갤럭시S26", status: "same" },
   { rank: 7, keyword: "코트", status: "up" },
   { rank: 8, keyword: "루이비통", status: "up" },
-  { rank: 9, keyword: "러닝화", status: "up" },
-  { rank: 10, keyword: "침대 프레임", status: "new" },
+  { rank: 9, keyword: "오프화이트", status: "up" },
+  { rank: 10, keyword: "카메라 필름", status: "new" },
 ];
 
 export default function SearchBoxWithDropdown({
   value,
   onChange,
-  placeholder = "상품명 또는 브랜드 입력",
+  placeholder = "상품명 또는 브랜드를 입력",
   widthClassName = "w-full",
   recentKeywords = [],
   recommendKeywords = defaultRecommendKeywords,
@@ -109,13 +109,13 @@ export default function SearchBoxWithDropdown({
           placeholder={placeholder}
           className="min-w-0 flex-1 px-4 text-[14px] outline-none"
           aria-label="검색어 입력"
-          aria-expanded={open}
-          aria-controls="search-suggestion-panel"
         />
 
         <button
           type="button"
           aria-label={open ? "검색 상세 닫기" : "검색 상세 열기"}
+          aria-expanded={open}
+          aria-controls="search-suggestion-panel"
           className="flex h-full min-w-[42px] items-center justify-center px-2 hover:bg-gray-50 sm:px-3"
           onClick={() => setOpen((prev) => !prev)}
         >
@@ -139,6 +139,8 @@ export default function SearchBoxWithDropdown({
       {open ? (
         <div
           id="search-suggestion-panel"
+          role="dialog"
+          aria-label="검색 제안 패널"
           className="absolute left-0 top-[54px] z-50 w-full overflow-hidden rounded-[18px] border border-violet-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
         >
           <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
@@ -146,7 +148,7 @@ export default function SearchBoxWithDropdown({
               <div className="text-[13px] font-medium text-gray-700">최근 검색어</div>
               <div className="mb-6 mt-4 text-[14px] text-gray-500">
                 {recentKeywords.length === 0 ? (
-                  <span>최근 검색어 내역이 없습니다.</span>
+                  <span>최근 검색어 이력이 없습니다.</span>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {recentKeywords.map((keyword) => (
@@ -231,7 +233,11 @@ export default function SearchBoxWithDropdown({
                 </button>
               </div>
 
-              <div className={`mt-4 grid gap-x-8 gap-y-3 ${trendColumns.length === 1 ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"}`}>
+              <div
+                className={`mt-4 grid gap-x-8 gap-y-3 ${
+                  trendColumns.length === 1 ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
+                }`}
+              >
                 {trendColumns.map((column, columnIndex) => (
                   <div key={columnIndex} className="space-y-3">
                     {column.map((item) => (
@@ -247,7 +253,9 @@ export default function SearchBoxWithDropdown({
                         <span className="w-5 text-[22px] font-bold leading-none text-black">
                           {item.rank}
                         </span>
-                        <span className="flex-1 truncate text-[14px] text-gray-800">{item.keyword}</span>
+                        <span className="flex-1 truncate text-[14px] text-gray-800">
+                          {item.keyword}
+                        </span>
                         <TrendStatus status={item.status} />
                       </button>
                     ))}

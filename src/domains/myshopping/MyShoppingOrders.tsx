@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import MyShoppingMobileNav from "./MyShoppingMobileNav";
@@ -37,23 +37,18 @@ export default function MyShoppingOrders() {
   const debouncedQuery = useDebouncedValue(queryInput.trim(), 300);
   const { data, isLoading, error } = useMyShoppingOrdersData(debouncedQuery, filter);
 
-  useEffect(() => {
-    setQueryInput(initialQuery);
-    setFilter(initialFilter);
-  }, [initialFilter, initialQuery]);
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setQueryInput((current) => current.trim());
   }
 
-  const orders = data?.orders ?? [];
   const sortedOrders = useMemo(() => {
+    const orders = data?.orders ?? [];
     if (!focusOrderId) return orders;
     const focused = orders.find((order) => order.id === focusOrderId);
     if (!focused) return orders;
     return [focused, ...orders.filter((order) => order.id !== focusOrderId)];
-  }, [focusOrderId, orders]);
+  }, [data?.orders, focusOrderId]);
 
   return (
     <MyShoppingShell
